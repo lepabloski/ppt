@@ -27,9 +27,9 @@
   </div>
 
   <ion-list>
+   Gano {{gana }}
     <ion-item *ngFor="let item of algo | async">
-      <h2>Producto: {{item.opcion}}</h2>
-      
+      <h2>opcion: {{item.opcion}}</h2>
     </ion-item>
   </ion-list>
 </ion-content>

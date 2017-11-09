@@ -5,6 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 
+
 /**
  * Generated class for the JugarPage page.
  *
@@ -22,6 +23,7 @@ export interface ShoppingItem {
   templateUrl: 'jugar.html',
 })
 export class JugarPage {
+  public gana;
   shoppingItem = {} as ShoppingItem;
   shoppingItemRef: AngularFireList<ShoppingItem>;
   public algo;
@@ -32,10 +34,32 @@ export class JugarPage {
   }
 
   ionViewDidLoad() {
+    if (this.afAuth.authState) {
+      this.algo = this.shoppingItemRef.valueChanges();
 
-     if (this.afAuth.authState) {
-    this.algo = this.shoppingItemRef.valueChanges(); 
+      this.gana = "Nadie";
+
+
+      this.algo.forEach(element => {
+
+        if (element[0].opcion > element[1].opcion) {
+          this.gana = "1";
+        }
+        if (element[0].opcion < element[1].opcion) {
+          this.gana = "2";
+        }
+
+        if (element[0].opcion == 3 && element[1].opcion == 1) {
+          this.gana = "2";
+        }
+
+        if (element[0].opcion == 1 && element[1].opcion == 3) {
+          this.gana = "1";
+        }
+
+      });
     }
+
   }
 
   login() {
@@ -49,6 +73,30 @@ export class JugarPage {
   opcion(item) {
     if (this.afAuth.authState) {
       this.shoppingItemRef.update(this.afAuth.auth.currentUser.uid, { opcion: item });
+      if (this.afAuth.authState) {
+        this.algo = this.shoppingItemRef.valueChanges();
+
+        this.gana = "Nadie";
+
+
+        this.algo.forEach(element => {
+
+          if (element[0].opcion > element[1].opcion) {
+            this.gana = "1";
+          }
+          if (element[0].opcion < element[1].opcion) {
+            this.gana = "2";
+          }
+
+          if (element[0].opcion == 3 && element[1].opcion == 1) {
+            this.gana = "2";
+          }
+          if (element[0].opcion == 1 && element[1].opcion == 3) {
+            this.gana = "1";
+          }
+
+        });
+      }
     }
   }
 }
