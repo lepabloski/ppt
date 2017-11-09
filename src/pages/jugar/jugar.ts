@@ -24,6 +24,7 @@ export interface ShoppingItem {
 export class JugarPage {
   shoppingItem = {} as ShoppingItem;
   shoppingItemRef: AngularFireList<ShoppingItem>;
+  public algo;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public servicio: ServiceProvider, public afAuth: AngularFireAuth,
     private database: AngularFireDatabase) {
@@ -32,7 +33,9 @@ export class JugarPage {
 
   ionViewDidLoad() {
 
-    // this.afAuth.auth.currentUser;
+     if (this.afAuth.authState) {
+    this.algo = this.shoppingItemRef.valueChanges(); 
+    }
   }
 
   login() {

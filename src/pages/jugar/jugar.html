@@ -15,7 +15,7 @@
 
 <ion-content padding>
   <div *ngIf="afAuth.authState | async; let user;">
-    <h1>Hello {{ afAuth.authState.displayName }}!</h1>
+    <h1>Hello {{ afAuth.auth.currentUser.displayName }}!</h1>
     <button (click)="logout()">Logout</button>
     <button (click)="opcion(1)">piedra</button>
     <button (click)="opcion(2)">papel</button>
@@ -25,4 +25,11 @@
     <p>Please login.</p>
     <button (click)="login()">Login with Google</button>
   </div>
+
+  <ion-list>
+    <ion-item *ngFor="let item of algo | async">
+      <h2>Producto: {{item.opcion}}</h2>
+      
+    </ion-item>
+  </ion-list>
 </ion-content>
