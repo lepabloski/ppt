@@ -9,22 +9,17 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
-export interface ShoppingItem {
-  // $key?: string,
-  descripcion: string,
-  cantidad: string
-}
+ 
 
 @Injectable()
 
 export class ServiceProvider {
-  shoppingItem = {} as ShoppingItem;
-  shoppingItemRef: AngularFireList<ShoppingItem>;
+ 
   constructor(
     public afAuth: AngularFireAuth,
     private database: AngularFireDatabase
   ) {
-    this.shoppingItemRef = this.database.list('shopping-list');
+ 
   }
 
 

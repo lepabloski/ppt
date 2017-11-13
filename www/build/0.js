@@ -27,7 +27,7 @@ var ListarUsuariosPageModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_2__listar_usuarios__["a" /* ListarUsuariosPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__listar_usuarios__["a" /* ListarUsuariosPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__listar_usuarios__["a" /* ListarUsuariosPage */]),
             ],
         })
     ], ListarUsuariosPageModule);
@@ -74,7 +74,7 @@ var ListarUsuariosPage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-listar-usuarios',template:/*ion-inline-start:"C:\xampp\htdocs\ppt\src\pages\listar-usuarios\listar-usuarios.html"*/`<!--\n\n  Generated template for the ListarUsuariosPage page.\n\n\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n\n  Ionic pages and navigation.\n\n-->\n\n<ion-header>\n\n\n\n    <ion-navbar color="dark">\n\n        <ion-title>ListarUsuarios</ion-title>\n\n    </ion-navbar>\n\n\n\n</ion-header>\n\n\n\n\n\n<ion-content padding>\n\n\n\n</ion-content>`/*ion-inline-end:"C:\xampp\htdocs\ppt\src\pages\listar-usuarios\listar-usuarios.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavParams */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
     ], ListarUsuariosPage);
     return ListarUsuariosPage;
 }());

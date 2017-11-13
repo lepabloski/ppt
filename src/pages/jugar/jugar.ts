@@ -1,67 +1,86 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, AlertController } from 'ionic-angular';
+import { AngularFireList, AngularFireObject, AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
 import { ServiceProvider } from '../../providers/service/service'
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
+import 'rxjs/add/operator/take';
 
-
-/**
- * Generated class for the JugarPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-export interface ShoppingItem {
-  // $key?: string,
-  opcion: string
-
-}
 @IonicPage()
 @Component({
   selector: 'page-jugar',
   templateUrl: 'jugar.html',
 })
 export class JugarPage {
-  public gana;
-  shoppingItem = {} as ShoppingItem;
-  shoppingItemRef: AngularFireList<ShoppingItem>;
-  public algo;
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+
+  negociosRef: AngularFireList<any>;
+  usuariosRef: AngularFireObject<any>;
+  negocios: Observable<any[]>;
+  usuario: Observable<any[]>;
+  usuarioPuntos: Observable<any[]>;
+  public nuevoValor;
+  constructor(
+    public navCtrl: NavController,
+    public alertCtrl: AlertController,
+    public database: AngularFireDatabase,
     public servicio: ServiceProvider, public afAuth: AngularFireAuth,
-    private database: AngularFireDatabase) {
-    this.shoppingItemRef = this.database.list('shopping-list');
+  ) {
+
+    this.negociosRef = this.database.list('clicks/negocios');
+    this.negocios = this.negociosRef.valueChanges();
+
   }
 
-  ionViewDidLoad() {
+  createTask() {
+    let newTaskModal = this.alertCtrl.create({
+      title: 'New Task',
+      message: "Enter a title for your new task",
+      inputs: [
+        {
+          name: 'title',
+          placeholder: 'Title'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            this.negociosRef.push({
+              title: data.title,
+              done: false
+            });
+          }
+        }
+      ]
+    });
+    newTaskModal.present(newTaskModal);
+  }
+
+  sumarPuntos() {
     if (this.afAuth.authState) {
-      this.algo = this.shoppingItemRef.valueChanges();
 
-      this.gana = "Nadie";
+      this.nuevoValor = 1;
+      this.usuariosRef = this.database.object('clicks/usuarios/' + this.afAuth.auth.currentUser.uid);
+      this.usuarioPuntos = this.usuariosRef.valueChanges();
 
-
-      this.algo.forEach(element => {
-
-        if (element[0].opcion > element[1].opcion) {
-          this.gana = "1";
+      this.usuario = this.usuariosRef.valueChanges();
+      this.usuario.take(1).subscribe(action => {
+        if (action) {
+          this.nuevoValor = action.puntos + 1;
+          this.usuariosRef.update({ puntos: this.nuevoValor });
         }
-        if (element[0].opcion < element[1].opcion) {
-          this.gana = "2";
-        }
-
-        if (element[0].opcion == 3 && element[1].opcion == 1) {
-          this.gana = "2";
-        }
-
-        if (element[0].opcion == 1 && element[1].opcion == 3) {
-          this.gana = "1";
-        }
-
       });
     }
-
   }
 
+  // this.afAuth.auth.currentUser.uid
   login() {
     this.servicio.login();
   }
@@ -69,34 +88,8 @@ export class JugarPage {
   logout() {
     this.servicio.logout();
   }
-  //  this.shoppingItemRef.update(this.afAuth.auth.currentUser.uid, { opcion: item });
-  opcion(item) {
-    if (this.afAuth.authState) {
-      this.shoppingItemRef.update(this.afAuth.auth.currentUser.uid, { opcion: item });
-      if (this.afAuth.authState) {
-        this.algo = this.shoppingItemRef.valueChanges();
-
-        this.gana = "Nadie";
-
-
-        this.algo.forEach(element => {
-
-          if (element[0].opcion > element[1].opcion) {
-            this.gana = "1";
-          }
-          if (element[0].opcion < element[1].opcion) {
-            this.gana = "2";
-          }
-
-          if (element[0].opcion == 3 && element[1].opcion == 1) {
-            this.gana = "2";
-          }
-          if (element[0].opcion == 1 && element[1].opcion == 3) {
-            this.gana = "1";
-          }
-
-        });
-      }
-    }
+  removeTask(task) {
+    console.log(task);
+    this.negociosRef.remove(task.key);
   }
 }
